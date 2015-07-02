@@ -12,27 +12,15 @@ public class Dictionary<K1, K2, V> {
 	}
 
 	public V get(K1 key1, K2 key2) {
-		V value = null;
-		for (int i = 0; i < size; i++) {
-			if ((key1 != null) && (key2 != null)) {
-				if (values[i].getK1().equals(key1)
-						&& values[i].getK2().equals(key2)) {
-					value = values[i].getV();
-				}
-			}
-		}
+		int index = isExist(key1, key2);
+		V value = values[index].getV();
 		return value;
 	}
 	
 	public void put(K1 key1, K2 key2, V value) {
 		boolean isInsert = true;
-		for (int i = 0; i < size; i++) {
-			if ((key1 != null) && (key2 != null)) {
-				if (values[i].getK1().equals(key1)
-						&& values[i].getK2().equals(key2)) {
-					isInsert = false;
-				}
-			}
+		if (isExist(key1, key2) != -1) {
+			isInsert = false;
 		}
 		
 		if (isInsert) {
@@ -48,15 +36,23 @@ public class Dictionary<K1, K2, V> {
 		}
 	}
 	
-	public boolean containKey(K1 key1, K2 key2) {
-		boolean isCheck = false;
+	public int isExist(K1 key1, K2 key2) {
+		int index = -1;
 		for (int i = 0; i < size; i++) {
 			if ((key1 != null) && (key2 != null)) {
 				if (values[i].getK1().equals(key1)
 						&& values[i].getK2().equals(key2)) {
-					isCheck = true;
+					index = i;
 				}
 			}
+		}
+		return index;
+	}
+	
+	public boolean containKey(K1 key1, K2 key2) {
+		boolean isCheck = false;
+		if (isExist(key1, key2) != -1) {
+			isCheck = true;
 		}
 		return isCheck;
 	}
